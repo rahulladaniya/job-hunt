@@ -1,34 +1,34 @@
 # 🤖 Job Hunt Agent
 
-Ek autonomous AI agent jo automatically job dhundhta hai, resume tailor karta hai, aur Google Sheet + Email ke zariye tumhe notify karta hai.
+An autonomous AI agent that automatically searches for jobs, tailors resumes, and notifies you through Google Sheets and Email.
 
 ---
 
 ## 📌 Overview
 
-Yeh agent daily shaam ko automatically:
-1. Multiple job portals se 200-300 jobs fetch karta hai
-2. Candidate ke skills ke basis pe relevant jobs filter karta hai
-3. Har relevant job ke liye tailored resume banata hai
-4. Sab kuch Google Sheet mein organize karta hai
-5. Priority-wise summary email bhejta hai
+This agent automatically every evening:
+1. Fetches 200–300 jobs from multiple job portals
+2. Filters relevant jobs based on the candidate’s skills
+3. Creates a tailored resume for every relevant job
+4. Organizes everything inside Google Sheets
+5. Sends priority-wise summary emails
 
 ---
 
 ## 🏗️ Project Structure
 
-```
+```text
 job-hunt-agent/
 │
 ├── agents/                          # LangChain Agents
-│   ├── orchestrator.py              # Main brain - sab agents coordinate karta hai
-│   ├── job_search_agent.py          # Jobs fetch karta hai sab portals se
-│   ├── filter_agent.py              # Relevant jobs filter karta hai
-│   ├── resume_agent.py              # Resume tailor karta hai per job
-│   ├── email_agent.py               # Email bhejta hai
-│   └── referral_agent.py            # Startup employees dhundhta hai
+│   ├── orchestrator.py              # Main brain - coordinates all agents
+│   ├── job_search_agent.py          # Fetches jobs from all portals
+│   ├── filter_agent.py              # Filters relevant jobs
+│   ├── resume_agent.py              # Tailors resumes per job
+│   ├── email_agent.py               # Sends emails
+│   └── referral_agent.py            # Finds startup employees
 │
-├── tools/                           # LangChain Tools (har agent ke liye)
+├── tools/                           # LangChain Tools (for each agent)
 │   ├── job_search/
 │   │   ├── jsearch_tool.py          # JSearch API (Indeed + Glassdoor)
 │   │   ├── adzuna_tool.py           # Adzuna API (Global + India)
@@ -42,15 +42,15 @@ job-hunt-agent/
 │   │   └── llm_relevance_tool.py    # Stage 2: LLM deep analysis
 │   │
 │   ├── resume/
-│   │   ├── read_resume_tool.py      # Resume padhta hai
-│   │   ├── tailor_resume_tool.py    # LLM se job-specific resume banata hai
-│   │   └── save_resume_tool.py      # PDF/DOCX save karta hai
+│   │   ├── read_resume_tool.py      # Reads the resume
+│   │   ├── tailor_resume_tool.py    # Creates job-specific resumes using LLM
+│   │   └── save_resume_tool.py      # Saves PDF/DOCX
 │   │
 │   ├── email/
-│   │   └── gmail_tool.py            # Gmail SMTP se email bhejta hai
+│   │   └── gmail_tool.py            # Sends emails using Gmail SMTP
 │   │
 │   └── sheets/
-│       └── gsheets_tool.py          # Google Sheets mein data daalta hai
+│       └── gsheets_tool.py          # Inserts data into Google Sheets
 │
 ├── database/
 │   └── jobs.db                      # SQLite - duplicate tracking
@@ -58,19 +58,19 @@ job-hunt-agent/
 ├── resumes/
 │   ├── templates/
 │   │   └── base_resume.docx         # Base resume template
-│   └── generated/                   # Tailored resumes yahan save honge
+│   └── generated/                   # Tailored resumes will be saved here
 │       └── [company]_[role]_[date].pdf
 │
 ├── config/
-│   ├── settings.py                  # Sab configuration ek jagah
-│   ├── candidate_profile.py         # Candidate ki info (skills, preferences)
-│   └── .env                         # API keys (git mein nahi jayega)
+│   ├── settings.py                  # All configuration in one place
+│   ├── candidate_profile.py         # Candidate information (skills, preferences)
+│   └── .env                         # API keys (not pushed to git)
 │
 ├── email/
 │   └── templates/
 │       ├── top_matches.html         # Email 1 template (Top 10 jobs)
-│       ├── good_matches.html        # Email 2 template (20-30 jobs)
-│       └── all_jobs.html            # Email 3 template (remaining)
+│       ├── good_matches.html        # Email 2 template (20–30 jobs)
+│       └── all_jobs.html            # Email 3 template (remaining jobs)
 │
 ├── sheets/
 │   └── sheet_manager.py             # Google Sheets management
@@ -78,68 +78,71 @@ job-hunt-agent/
 ├── logs/
 │   └── agent.log                    # Daily logs
 │
-├── scheduler.py                     # APScheduler - daily shaam ko trigger
+├── scheduler.py                     # APScheduler - triggers every evening
 ├── main.py                          # Entry point
 ├── requirements.txt                 # Dependencies
-└── README.md                        # Yeh file
-```
+└── README.md                        # This file
+````
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Component | Technology | Cost |
-|-----------|-----------|------|
-| LLM | Qwen2.5 3B (llama.cpp) | Free (Local) |
-| Agent Framework | LangChain | Free |
-| LinkedIn + Naukri | Apify | $5/month |
-| Indeed + Glassdoor | JSearch API (RapidAPI) | Free (200 calls/month) |
-| Global Jobs | Adzuna API | Free (250 calls/month) |
-| Remote Jobs | Remotive + Arbeitnow | Free (Unlimited) |
-| Resume | python-docx + reportlab | Free |
-| Email | Gmail SMTP | Free |
-| Database | SQLite | Free |
-| Tracking | Google Sheets API (gspread) | Free |
-| Scheduler | APScheduler | Free |
+| Component          | Technology                  | Cost                   |
+| ------------------ | --------------------------- | ---------------------- |
+| LLM                | Qwen2.5 3B (llama.cpp)      | Free (Local)           |
+| Agent Framework    | LangChain                   | Free                   |
+| LinkedIn + Naukri  | Apify                       | $5/month               |
+| Indeed + Glassdoor | JSearch API (RapidAPI)      | Free (200 calls/month) |
+| Global Jobs        | Adzuna API                  | Free (250 calls/month) |
+| Remote Jobs        | Remotive + Arbeitnow        | Free (Unlimited)       |
+| Resume             | python-docx + reportlab     | Free                   |
+| Email              | Gmail SMTP                  | Free                   |
+| Database           | SQLite                      | Free                   |
+| Tracking           | Google Sheets API (gspread) | Free                   |
+| Scheduler          | APScheduler                 | Free                   |
 
-**Total Cost: ~$5/month** (sirf Apify ke liye)
+**Total Cost: ~$5/month** (only for Apify)
 
 ---
 
 ## 📊 Google Sheet Structure
 
 ### Sheet 1 — Daily Jobs
-| Column | Description |
-|--------|-------------|
-| Date | Jis din job mili |
-| Job Title | Role ka naam |
-| Company | Company name |
-| Location | City / Remote |
-| Job URL | Direct link |
-| Match Score | LLM ne diya (1-10) |
-| Skills Match | Jo skills match hui |
-| Missing Skills | Jo skills nahi hain |
-| Resume Path | Tailored resume ka path |
-| Source Portal | LinkedIn / Naukri / Indeed |
-| Posted Time | Job kab post hui |
-| Status | Pending / Applied / Rejected / Interested |
+
+| Column         | Description                               |
+| -------------- | ----------------------------------------- |
+| Date           | Date when the job was found               |
+| Job Title      | Name of the role                          |
+| Company        | Company name                              |
+| Location       | City / Remote                             |
+| Job URL        | Direct link                               |
+| Match Score    | Score given by the LLM (1–10)             |
+| Skills Match   | Matching skills                           |
+| Missing Skills | Skills not available                      |
+| Resume Path    | Path of tailored resume                   |
+| Source Portal  | LinkedIn / Naukri / Indeed                |
+| Posted Time    | When the job was posted                   |
+| Status         | Pending / Applied / Rejected / Interested |
 
 ### Sheet 2 — Resume Tracker
-| Column | Description |
-|--------|-------------|
-| Job Title | Role |
-| Company | Company |
-| Resume Version | File name |
-| Created Date | Kab banaya |
+
+| Column         | Description  |
+| -------------- | ------------ |
+| Job Title      | Role         |
+| Company        | Company      |
+| Resume Version | File name    |
+| Created Date   | Date created |
 
 ### Sheet 3 — Daily Stats
-| Column | Description |
-|--------|-------------|
-| Date | Din |
-| Total Fetched | Kitni jobs fetch hui |
-| After Filter | Relevant kitni |
-| Emails Sent | Kitne emails gaye |
-| Sheet Updated | Yes/No |
+
+| Column        | Description                   |
+| ------------- | ----------------------------- |
+| Date          | Day                           |
+| Total Fetched | Total jobs fetched            |
+| After Filter  | Relevant jobs after filtering |
+| Emails Sent   | Total emails sent             |
+| Sheet Updated | Yes/No                        |
 
 ---
 
@@ -147,17 +150,17 @@ job-hunt-agent/
 
 **3 emails daily:**
 
-```
+```text
 Email 1 — 🔥 Top Matches (Match Score 8+)
 ├── ~10 jobs
 └── Best tailored resumes ready
 
-Email 2 — ✅ Good Matches (Match Score 6-8)
-├── ~20-30 jobs
+Email 2 — ✅ Good Matches (Match Score 6–8)
+├── ~20–30 jobs
 └── Resumes ready
 
 Email 3 — 📋 Full Sheet Link
-└── Remaining sab jobs
+└── Remaining jobs
     + Google Sheet link
 ```
 
@@ -165,8 +168,8 @@ Email 3 — 📋 Full Sheet Link
 
 ## ⚙️ Agent Flow
 
-```
-Shaam 6 baje → Scheduler trigger kare
+```text
+6 PM → Scheduler triggers
 
 Orchestrator Agent
 │
@@ -176,31 +179,32 @@ Orchestrator Agent
 │     ├── JSearch API     (50 jobs, Indeed/Glassdoor)
 │     ├── Adzuna API      (50 jobs, Global+India)
 │     └── Remotive        (50+ jobs, Remote)
-│         Total: 200-300 jobs fetched
+│         Total: 200–300 jobs fetched
 │
 ├─► Filter Agent
-│     ├── Stage 1: Keyword filter   → 200 se 100-150
-│     └── Stage 2: LLM relevance    → 150 se 80-100
+│     ├── Stage 1: Keyword filter   → 200 to 100–150
+│     └── Stage 2: LLM relevance    → 150 to 80–100
 │
 ├─► Resume Agent
-│     └── Har job ke liye tailored resume banao
-│         Save karo: resumes/generated/
+│     └── Create tailored resume for every job
+│         Save to: resumes/generated/
 │
 ├─► Sheets Agent
-│     └── Google Sheet update karo
-│         (sab 80-100 jobs ka data)
+│     └── Update Google Sheets
+│         (all 80–100 jobs data)
 │
 └─► Email Agent
       ├── Email 1: Top 10 (score 8+)
-      ├── Email 2: Next 20-30 (score 6-8)
-      └── Email 3: Sheet link + baaki sab
+      ├── Email 2: Next 20–30 (score 6–8)
+      └── Email 3: Sheet link + remaining jobs
 ```
 
 ---
 
 ## 🚀 Setup Guide
 
-### Step 1 — Dependencies Install karo
+### Step 1 — Install Dependencies
+
 ```bash
 pip install langchain langchain-community
 pip install llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu121
@@ -208,15 +212,17 @@ pip install apify-client gspread python-docx
 pip install requests APScheduler python-dotenv
 ```
 
-### Step 2 — Model Download karo
+### Step 2 — Download the Model
+
 ```bash
-# HuggingFace se Qwen2.5 3B Q4_K_M download karo
+# Download Qwen2.5 3B Q4_K_M from HuggingFace
 # TheBloke/Qwen2.5-3B-Instruct-GGUF
 ```
 
-### Step 3 — API Keys Setup karo
+### Step 3 — Setup API Keys
+
 ```bash
-# config/.env file mein daalo:
+# Add these inside config/.env file:
 APIFY_API_KEY=your_key
 JSEARCH_API_KEY=your_key
 ADZUNA_APP_ID=your_id
@@ -226,7 +232,8 @@ GMAIL_APP_PASSWORD=your_app_password
 GOOGLE_SHEET_ID=your_sheet_id
 ```
 
-### Step 4 — Candidate Profile Setup karo
+### Step 4 — Setup Candidate Profile
+
 ```python
 # config/candidate_profile.py
 profile = {
@@ -240,7 +247,8 @@ profile = {
 }
 ```
 
-### Step 5 — Run karo
+### Step 5 — Run the Project
+
 ```bash
 python main.py
 ```
@@ -249,7 +257,7 @@ python main.py
 
 ## 📅 Development Roadmap
 
-```
+```text
 Week 1:
   ✅ Project Structure
   ⬜ LangChain + Qwen2.5 Setup
@@ -274,14 +282,15 @@ Week 3:
 
 ## ⚠️ Important Notes
 
-- Apify $5 free credits wisely use karo — din mein ek baar hi chalao
-- Gmail ke liye App Password use karo (2FA enable karo pehle)
-- Google Sheets Service Account banao access ke liye
-- Qwen2.5 model poora GPU pe load hoga (4GB VRAM needed)
-- SQLite duplicate tracking ensure karta hai same job baar baar na aaye
+* Use Apify’s $5 free credits wisely — run only once daily
+* Use Gmail App Password (enable 2FA first)
+* Create a Google Sheets Service Account for access
+* Qwen2.5 model will load fully on GPU (4GB VRAM required)
+* SQLite duplicate tracking ensures the same job does not appear repeatedly
 
 ---
 
 ## 📝 License
 
-Personal use only. Job portals ke Terms of Service respect karo.
+Personal use only. Respect the Terms of Service of job portals.
+
